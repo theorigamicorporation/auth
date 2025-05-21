@@ -43,6 +43,7 @@ describe('main.ts', () => {
     status: 200,
     statusText: 'OK',
     headers: {},
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     config: {} as any
   }
 
@@ -122,6 +123,7 @@ describe('main.ts', () => {
       status: 200,
       statusText: 'OK',
       headers: {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       config: {} as any
     })
 
