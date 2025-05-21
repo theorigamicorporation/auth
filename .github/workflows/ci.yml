@@ -57,8 +57,9 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          service_account_name: ${{ secrets.RSO_DEV_SERVICE_ACCOUNT_NAME }}
+          service_account_secret: ${{ secrets.RSO_DEV_SERVICE_ACCOUNT_SECRET }}
 
       - name: Print Output
         id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+        run: echo "${{ steps.test-action.outputs.access_token }}"
