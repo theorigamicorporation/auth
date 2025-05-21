@@ -49,7 +49,7 @@ jobs:
 
       - name: Authenticate with RSO Dev Cloud
         id: auth
-        uses: theorigamicorporation/rso-auth-action@v1
+        uses: theorigamicorporation/auth@v1
         with:
           service_account_name: ${{ secrets.RSO_SERVICE_ACCOUNT_NAME }}
           service_account_secret: ${{ secrets.RSO_SERVICE_ACCOUNT_SECRET }}
@@ -75,7 +75,7 @@ jobs:
 
       - name: Authenticate with RSO Dev Cloud (Custom API)
         id: auth
-        uses: theorigamicorporation/rso-auth-action@v1
+        uses: theorigamicorporation/auth@v1
         with:
           api_url: https://custom-auth.example.com/token/
           client_id: custom-client-id
