@@ -1,23 +1,33 @@
-name: The name of your action here
-description: Provide a description here
-author: Your name or organization here
+name: RSO Dev Cloud Authentication
+description: Authenticates with RSO Developer Cloud and exports an access token
+author: The Origami Corporation
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: heart
-  color: red
+  icon: lock
+  color: blue
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: Your input description here
+  api_url:
+    description: 'The authentication API URL endpoint'
+    required: false
+    default: https://auth.theorigamicorporation.com/application/o/token/
+  client_id:
+    description: 'The client ID for authentication'
+    required: false
+    default: 'FdPqdka22aPG9AnWuVMpFhsz7BGsgJCbxTCTkXrg'
+  service_account_name:
+    description: 'The service account name for authentication'
     required: true
-    default: '1000'
+  service_account_secret:
+    description: 'The service account secret for authentication'
+    required: true
 
 # Define your outputs here.
 outputs:
-  time:
-    description: Your output description here
+  access_token:
+    description: 'The authentication access token'
 
 runs:
   using: node20
