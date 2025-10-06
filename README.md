@@ -15,12 +15,12 @@ The token is made available both as an output and as an environment variable.
 
 ## Inputs
 
-| Input                    | Description                                   | Required | Default                                                     |
-| ------------------------ | --------------------------------------------- | -------- | ----------------------------------------------------------- |
+| Input                    | Description                                   | Required | Default                                                                                                                      |
+| ------------------------ | --------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `api_url`                | The authentication API URL endpoint           | No       | [`https://auth.theorigamicorporation.com/application/o/token/`](https://auth.theorigamicorporation.com/application/o/token/) |
-| `client_id`              | The client ID for authentication              | No       | FdPqdka22aPG9AnWuVMpFhsz7BGsgJCbxTCTkXrg                    |
-| `service_account_name`   | The service account name for authentication   | Yes      | N/A                                                         |
-| `service_account_secret` | The service account secret for authentication | Yes      | N/A                                                         |
+| `client_id`              | The client ID for authentication              | No       | FdPqdka22aPG9AnWuVMpFhsz7BGsgJCbxTCTkXrg                                                                                     |
+| `service_account_name`   | The service account name for authentication   | Yes      | N/A                                                                                                                          |
+| `service_account_secret` | The service account secret for authentication | Yes      | N/A                                                                                                                          |
 
 ## Outputs
 
