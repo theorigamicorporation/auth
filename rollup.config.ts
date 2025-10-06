@@ -18,7 +18,19 @@ const config = {
     nodeResolve({ preferBuiltins: true }),
     commonjs(),
     json()
-  ]
+  ],
+  // Suppress circular dependency warnings for known issues in dependencies
+  onwarn(warning, warn) {
+    // Skip certain warnings
+    if (
+      warning.code === 'CIRCULAR_DEPENDENCY' &&
+      warning.message.includes('@actions/core')
+    ) {
+      return
+    }
+    // Use default for everything else
+    warn(warning)
+  }
 }
 
 export default config
