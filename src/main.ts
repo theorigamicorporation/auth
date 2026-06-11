@@ -2,6 +2,10 @@ import * as core from '@actions/core'
 import axios from 'axios'
 import * as querystring from 'querystring'
 
+// Abort the token request if the auth endpoint does not respond in time, so a
+// hung endpoint cannot stall the workflow indefinitely.
+const REQUEST_TIMEOUT_MS = 30_000
+
 /**
  * The main function for the action.
  *
@@ -35,7 +39,8 @@ export async function run(): Promise<void> {
     const response = await axios.post(apiUrl, formData, {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
-      }
+      },
+      timeout: REQUEST_TIMEOUT_MS
     })
 
     // Extract the access token from the response
@@ -55,7 +60,15 @@ export async function run(): Promise<void> {
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) {
-      core.setFailed(`Authentication failed: ${error.message}`)
+      // Axios reports request timeouts as ECONNABORTED (or ETIMEDOUT)
+      const code = (error as NodeJS.ErrnoException).code
+      if (code === 'ECONNABORTED' || code === 'ETIMEDOUT') {
+        core.setFailed(
+          `Authentication failed: request to the token endpoint timed out after ${REQUEST_TIMEOUT_MS / 1000}s`
+        )
+      } else {
+        core.setFailed(`Authentication failed: ${error.message}`)
+      }
     } else {
       core.setFailed('Authentication failed with an unknown error')
     }

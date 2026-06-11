@@ -137,6 +137,24 @@ describe('main.ts', () => {
     )
   })
 
+  it('handles request timeouts with a clear message', async () => {
+    // Mock an axios timeout error
+    const timeoutError = new Error(
+      'timeout of 30000ms exceeded'
+    ) as NodeJS.ErrnoException
+    timeoutError.code = 'ECONNABORTED'
+    mockAxiosPost.mockRejectedValue(timeoutError)
+
+    // Run the action
+    await run()
+
+    // Verify the action was marked as failed with the timeout message
+    expect(core.setFailed).toHaveBeenNthCalledWith(
+      1,
+      'Authentication failed: request to the token endpoint timed out after 30s'
+    )
+  })
+
   it('handles unknown errors', async () => {
     // Mock a non-Error rejection
     mockAxiosPost.mockRejectedValue('Unknown error')
