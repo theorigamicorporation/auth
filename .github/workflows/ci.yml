@@ -52,7 +52,7 @@ jobs:
 
   test-action:
     name: GitHub Actions Test
-    runs-on: ubuntu-latest
+    runs-on: o4-k8s-runner-set-o4
 
     steps:
       - name: Checkout
@@ -66,6 +66,8 @@ jobs:
           service_account_name: ${{ secrets.RSO_DEV_SERVICE_ACCOUNT_NAME }}
           service_account_secret: ${{ secrets.RSO_DEV_SERVICE_ACCOUNT_SECRET }}
 
-      - name: Print Output
+      - name: Check Output
         id: output
-        run: echo "${{ steps.test-action.outputs.access_token }}"
+        env:
+          ACCESS_TOKEN: ${{ steps.test-action.outputs.access_token }}
+        run: test -n "$ACCESS_TOKEN"
