@@ -1,17 +1,17 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
+  "name": "rso-dev-auth",
+  "description": "Exchange rso.dev service-account credentials for an OAuth access token",
   "version": "0.0.0",
   "author": "",
   "type": "module",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/theorigamicorporation/auth",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/theorigamicorporation/auth.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/theorigamicorporation/auth/issues"
   },
   "keywords": [
     "actions"
