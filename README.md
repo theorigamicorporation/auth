@@ -55,13 +55,18 @@ jobs:
           service_account_secret: ${{ secrets.RSO_SERVICE_ACCOUNT_SECRET }}
 
       - name: Use the token in a subsequent step
+        env:
+          RSO_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: |
-          # The token is available as an output
-          echo "Token is ${{ steps.auth.outputs.access_token }}"
-
-          # The token is also available as an environment variable
-          echo "Token from env is ${{ env.RSO_DEV_ACCESS_TOKEN }}"
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer $RSO_TOKEN" \
+            https://api.example.com/resource
 ```
+
+The action masks the access token (and the service account secret) in the
+workflow log. Pass the token through `env` rather than inlining
+`${{ steps.auth.outputs.access_token }}` in a script, and never `echo` it.
+`RSO_DEV_ACCESS_TOKEN` is also exported for every later step in the job.
 
 ### Custom API URL Example
 

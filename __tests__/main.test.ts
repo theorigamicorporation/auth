@@ -101,6 +101,46 @@ describe('main.ts', () => {
     )
   })
 
+  it('masks the issued tokens before setting outputs', async () => {
+    mockAxiosPost.mockResolvedValue({
+      ...mockTokenResponse,
+      data: {
+        ...mockTokenResponse.data,
+        refresh_token: 'mock-refresh-token',
+        id_token: 'mock-id-token'
+      }
+    })
+
+    await run()
+
+    expect(core.setSecret).toHaveBeenCalledWith('test-secret')
+    expect(core.setSecret).toHaveBeenCalledWith('mock-access-token')
+    expect(core.setSecret).toHaveBeenCalledWith('mock-refresh-token')
+    expect(core.setSecret).toHaveBeenCalledWith('mock-id-token')
+
+    const tokenMaskOrder =
+      core.setSecret.mock.invocationCallOrder[
+        core.setSecret.mock.calls.findIndex(
+          ([value]) => value === 'mock-access-token'
+        )
+      ]
+    expect(tokenMaskOrder).toBeLessThan(
+      core.setOutput.mock.invocationCallOrder[0]
+    )
+    expect(tokenMaskOrder).toBeLessThan(
+      core.exportVariable.mock.invocationCallOrder[0]
+    )
+  })
+
+  it('masks the service account secret before the request', async () => {
+    await run()
+
+    expect(core.setSecret.mock.invocationCallOrder[0]).toBeLessThan(
+      mockAxiosPost.mock.invocationCallOrder[0]
+    )
+    expect(core.setSecret).toHaveBeenNthCalledWith(1, 'test-secret')
+  })
+
   it('handles API errors appropriately', async () => {
     // Mock API error
     const errorMessage = 'Invalid client credentials'
