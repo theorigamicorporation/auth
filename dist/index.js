@@ -47846,6 +47846,7 @@ async function run() {
             required: true
         });
         const serviceAccountSecret = coreExports.getInput('service_account_secret', { required: true });
+        coreExports.setSecret(serviceAccountSecret);
         coreExports.debug(`Authenticating with RSO Developer Cloud at ${apiUrl}`);
         // Create the form data for the authentication request
         const formData = require$$8.stringify({
@@ -47862,8 +47863,11 @@ async function run() {
             },
             timeout: REQUEST_TIMEOUT_MS
         });
-        // Extract the access token from the response
-        const accessToken = response.data.access_token;
+        const { access_token: accessToken, refresh_token, id_token } = response.data ?? {};
+        for (const value of [accessToken, refresh_token, id_token]) {
+            if (typeof value === 'string' && value)
+                coreExports.setSecret(value);
+        }
         if (!accessToken) {
             throw new Error('No access token received in response');
         }

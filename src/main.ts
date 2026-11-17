@@ -23,6 +23,7 @@ export async function run(): Promise<void> {
       'service_account_secret',
       { required: true }
     )
+    core.setSecret(serviceAccountSecret)
 
     core.debug(`Authenticating with RSO Developer Cloud at ${apiUrl}`)
 
@@ -43,8 +44,15 @@ export async function run(): Promise<void> {
       timeout: REQUEST_TIMEOUT_MS
     })
 
-    // Extract the access token from the response
-    const accessToken = response.data.access_token
+    const {
+      access_token: accessToken,
+      refresh_token,
+      id_token
+    } = response.data ?? {}
+
+    for (const value of [accessToken, refresh_token, id_token]) {
+      if (typeof value === 'string' && value) core.setSecret(value)
+    }
 
     if (!accessToken) {
       throw new Error('No access token received in response')
