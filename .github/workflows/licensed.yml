@@ -29,7 +29,7 @@ jobs:
   licensed:
     name: Check Licenses
     timeout-minutes: 30
-    runs-on: o4-k8s-runner-set-o4
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
